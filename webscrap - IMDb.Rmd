@@ -1,0 +1,92 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Introduction to web scrapping
+
+Note: this whole notebook is based on the YouTube tutorial series of DataSclice on Web Scrapping.
+
+https://www.youtube.com/watch?v=v8Yh_4oE-Fs
+
+```{r}
+#Import librairies
+library(rvest)
+library(dplyr)
+```
+
+
+```{r}
+link = "https://www.imdb.com/search/title/?at=0&num_votes=25000,&sort=moviemeter&title_type=feature"
+
+#Create an html document from a URL
+page = read_html(link)
+
+```
+
+
+```{r}
+#Scrap the name, year, rating and synopsis
+
+#Create the name column
+name = page %>% 
+  #Select parts of a document using CSS selectors
+  #Note: we used the google selector gadget to find the tag of what we were looking for.
+  html_nodes(".lister-item-header a") %>% 
+  
+  #Extract text from selected nodes
+  html_text()
+  
+```
+
+
+```{r}
+name
+```
+
+```{r}
+year = page %>% 
+  html_nodes(".text-muted.unbold") %>% 
+  html_text()
+
+rating = page %>% 
+  html_nodes(".ratings-imdb-rating strong") %>% 
+  html_text()
+
+synopsis = page %>% 
+  html_nodes(".ratings-bar+ .text-muted") %>% 
+  html_text()
+
+```
+
+
+
+```{r}
+movies = data.frame(name, year, rating, synopsis, stringsAsFactors=FALSE)
+movies
+```
+
+
+```{r}
+#write.csv(movies.csv)
+```
+
+
+
+# Part 2
+
+Nested links
+when you scrap links and navigate to those links and scrap more data.
+Let's say we want to go grab all the primary people of the cast. 
+
+
+```{r}
+
+
+
+
+
+```
+
+
+
